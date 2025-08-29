@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+# MediView - DICOM Viewer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+MediView is a lightweight web application for viewing medical DICOM images. It allows users to upload `.dcm` files, view them in a web-based viewer, and display key patient metadata extracted from the image.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+* Upload and display DICOM (`.dcm`) images.
+* View basic patient metadata:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+  * Patient Name
+  * Patient ID
+  * Modality
+  * Study Date
+* Responsive and professional UI using **Bootstrap**.
+* Built with **React**, **Cornerstone.js**, **dicom-parser**, and **cornerstone-wado-image-loader**.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* **React** – Frontend framework.
+* **Bootstrap** – Styling and layout.
+* **Cornerstone.js** – DICOM image rendering.
+* **cornerstone-wado-image-loader** – Loads DICOM images into Cornerstone.
+* **dicom-parser** – Parses DICOM metadata.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone the repository:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+git clone https://github.com/ElijahChileshe/MediView-A-Lightweight-Medical-Imaging-Viewer
+```
 
-### `npm run eject`
+2. Install dependencies:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm install
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Start the development server:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. Open your browser and go to `http://localhost:3000`.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Usage
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Click the **Choose File** button to upload a `.dcm` file.
+2. The DICOM image will be displayed in the viewer.
+3. Patient metadata will appear below the viewer.
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+<!-- ## Demo
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![Screenshot](screenshot.png) *(Add a screenshot of your app here)*
 
-### Making a Progressive Web App
+--- -->
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
