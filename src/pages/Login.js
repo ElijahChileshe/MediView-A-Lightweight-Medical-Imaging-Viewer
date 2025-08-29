@@ -15,32 +15,28 @@ function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleLogin}
-        className="bg-white p-6 rounded-lg shadow-md w-80"
-      >
-        <h2 className="text-xl font-bold mb-4 text-center">MediView Login</h2>
-        <input
-          type="text"
-          placeholder="Username"
-          className="border p-2 w-full mb-3 rounded"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-2 w-full mb-3 rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded w-full hover:bg-blue-700"
-        >
-          Login
-        </button>
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+      <form onSubmit={handleLogin} className="p-4 bg-white rounded shadow" style={{width: "300px"}}>
+        <h2 className="text-center mb-4">MediView Login</h2>
+        <div className="mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <input
+            type="password"
+            className="form-control"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary w-100">Login</button>
       </form>
     </div>
   );

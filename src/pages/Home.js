@@ -4,16 +4,12 @@ import { useNavigate } from "react-router-dom";
 function Home() {
   const navigate = useNavigate();
 
-  const handleViewDicom = () => {
-    navigate("/viewer");
-  };
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-      <h1 className="text-2xl font-bold mb-6">Welcome to MediView</h1>
+    <div className="d-flex flex-column justify-content-center align-items-center vh-100 bg-light">
+      <h1 className="mb-4">Welcome to MediView</h1>
       <button
-        onClick={handleViewDicom}
-        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        onClick={() => navigate("/viewer")}
+        className="btn btn-success"
       >
         Open DICOM Viewer
       </button>
