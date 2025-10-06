@@ -11,47 +11,51 @@ function Viewer() {
 
   useEffect(() => {
     if (!file) return;
-
+  
     const element = elementRef.current;
     cornerstone.enable(element);
-
+  
     // Link dependencies
     cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
     cornerstoneWADOImageLoader.external.dicomParser = dicomParser;
-
+    cornerstone.registerImageLoader('wadouri', cornerstoneWADOImageLoader.wadouri.loadImage);
+  
     cornerstoneWADOImageLoader.webWorkerManager.initialize({
-      maxWebWorkers: navigator.hardwareConcurrency || 1,
-      startWebWorkersOnDemand: true,
+      webWorkerPath:
+        "https://unpkg.com/cornerstone-wado-image-loader@latest/dist/cornerstoneWADOImageLoaderWebWorker.js",
+      taskConfiguration: {
+        decodeTask: {
+          codecsPath:
+            "https://unpkg.com/cornerstone-wado-image-loader@latest/dist/cornerstoneWADOImageLoaderCodecs.js",
+        },
+      },
     });
-
-    // Read file as ArrayBuffer
+  
     const reader = new FileReader();
     reader.onload = function(e) {
       const arrayBuffer = e.target.result;
-
-      // Parse DICOM metadata
       const byteArray = new Uint8Array(arrayBuffer);
       const dataSet = dicomParser.parseDicom(byteArray);
-
+  
       setMetadata({
         "Patient Name": dataSet.string("x00100010") || "Unknown",
         "Patient ID": dataSet.string("x00100020") || "Unknown",
         "Modality": dataSet.string("x00080060") || "Unknown",
         "Study Date": dataSet.string("x00080020") || "Unknown",
       });
-
-      // Load image with WADO loader
+  
       const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
-      const wadouriId = `wadouri:${imageId}`;
-
-      cornerstone.loadImage(wadouriId)
+  
+      cornerstone.loadImage(imageId)
         .then(image => cornerstone.displayImage(element, image))
-        .catch(err => console.error(err));
+        .catch(err => console.error("Failed to load image:", err));
     };
+  
     reader.readAsArrayBuffer(file);
-
+  
     return () => cornerstone.disable(element);
   }, [file]);
+  
 
   return (
     <div className="container mt-5">
