@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Login.css"; // we'll create a separate CSS file
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -15,10 +16,10 @@ function Login() {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <form onSubmit={handleLogin} className="p-4 bg-white rounded shadow" style={{width: "300px"}}>
-        <h2 className="text-center mb-4">MediView Login</h2>
-        <div className="mb-3">
+    <div className="login-container">
+      <form onSubmit={handleLogin} className="login-form">
+        <h2 className="login-title">MediView Login</h2>
+        <div className="form-group">
           <input
             type="text"
             className="form-control"
@@ -27,7 +28,7 @@ function Login() {
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
-        <div className="mb-3">
+        <div className="form-group">
           <input
             type="password"
             className="form-control"
@@ -36,7 +37,9 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit" className="btn btn-primary w-100">Login</button>
+        <button type="submit" className="login-button">
+          Login
+        </button>
       </form>
     </div>
   );

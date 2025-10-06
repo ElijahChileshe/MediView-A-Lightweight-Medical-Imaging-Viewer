@@ -1,0 +1,55 @@
+/* Full screen gray gradient background */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4b5563, #9ca3af); /* dark to light gray */
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Login form card */
+  .login-form {
+    width: 600px;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+  }
+  
+  /* Title */
+  .login-title {
+    font-size: 2.0rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1f2937;
+  }
+  
+  /* Form inputs */
+  .form-control {
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    border: 1px solid #d1d5db;
+  }
+  
+  /* Submit button */
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    background: #4b5563; /* professional gray */
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background: #6b7280; /* slightly lighter gray on hover */
+  }
+  
