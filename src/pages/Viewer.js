@@ -57,10 +57,22 @@ function Viewer() {
 
       // Load and display the DICOM image
       const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
-      cornerstone
-        .loadImage(imageId)
-        .then((image) => cornerstone.displayImage(element, image))
+      cornerstone.loadImage(imageId).then((image) => 
+        cornerstone.displayImage(element, image))
         .catch((err) => console.error("Failed to load image:", err));
+
+        // Enable mouse wheel zoom
+      element.addEventListener("wheel", (event) => {
+        event.preventDefault(); // prevent page scroll
+        const viewport = cornerstone.getViewport(element);
+        const zoomFactor = 1.05;
+        if (event.deltaY < 0) {
+          viewport.scale *= zoomFactor; // zoom in
+        } else {
+          viewport.scale /= zoomFactor; // zoom out
+        }
+        cornerstone.setViewport(element, viewport);
+      });
     };
 
     reader.readAsArrayBuffer(file); // Read the file as ArrayBuffer
@@ -71,98 +83,122 @@ function Viewer() {
 
   return (
     <div
-      className="container mt-5"
       style={{
-        maxWidth: "1100px",
-        background: "#f8f9fa",
-        padding: "20px",
-        borderRadius: "16px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        minHeight: "100vh",            // full screen height
+        backgroundColor: "#3b3b3b",    // dark gray outer background
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "40px 20px",
+        boxSizing: "border-box",
       }}
     >
-      {/* Header */}
-      <h2 className="text-center mb-4" style={{ fontWeight: 600 }}>
-        🩻 Mini DICOM Viewer
-      </h2>
-
-      {/* File Upload Input */}
-      <div className="text-center mb-4">
-        <input
-          type="file"
-          accept=".dcm"
-          onChange={(e) => {
-            setFile(e.target.files[0]);
-            setMetadata({});
-          }}
-          className="form-control"
-          style={{
-            width: "300px",
-            margin: "0 auto",
-            borderRadius: "8px",
-          }}
-        />
-      </div>
-
-      {/* Layout Grid: Viewer (Left) + Metadata Panel (Right) */}
       <div
+        className="container mt-5"
         style={{
-          display: "grid",
-          gridTemplateColumns: "60% 38%",
-          gap: "2%",
-          alignItems: "flex-start",
+          maxWidth: "80%",
+          height: "800px",
+          background: "#f8f9fa",
+          padding: "20px",
+          borderRadius: "16px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
         }}
       >
-        {/* 🖼️ DICOM Image Viewer */}
-        <div
-          ref={elementRef}
-          style={{
-            width: "100%",
-            height: "512px",
-            backgroundColor: "black",
-            borderRadius: "12px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-          }}
-        ></div>
+        {/* Header */}
+        <h2 className="text-center mb-4" style={{ fontWeight: 600 }}>
+          MediView DICOM Viewer
+        </h2>
 
-        {/* 📋 Metadata Panel */}
-        {Object.keys(metadata).length > 0 ? (
-          <div
-            style={{
-              backgroundColor: "white",
-              borderRadius: "12px",
-              padding: "16px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-              height: "512px",
-              overflowY: "auto", // ✅ Enables scrolling for long metadata
+        {/* File Upload Input */}
+        <div className="text-center mb-4">
+          <input
+            type="file"
+            accept=".dcm"
+            onChange={(e) => {
+              setFile(e.target.files[0]);
+              setMetadata({});
             }}
-          >
-            <h5
-              style={{
-                fontWeight: 600,
-                marginBottom: "12px",
-                textAlign: "center",
-                color: "#333",
-              }}
-            >
-              DICOM Metadata
-            </h5>
-            <MetadataPanel metadata={metadata} />
-          </div>
-        ) : (
-          // Placeholder when no file is uploaded
-          <div
+            className="form-control"
             style={{
-              textAlign: "center",
-              color: "#777",
-              fontStyle: "italic",
-              paddingTop: "200px",
+              width: "300px",
+              margin: "0 auto",
+              borderRadius: "8px",
             }}
-          >
-            Upload a DICOM file to view details
-          </div>
-        )}
-      </div>
+          />
+        </div>
+
+        {/* Layout Grid: Viewer (Left) + Metadata Panel (Right) */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "60% 38%",
+            gap: "2%",
+            alignItems: "flex-start",
+            position: "relative", // allows overlay positioning
+          }}
+        >
+    {/* DICOM Viewer */}
+    <div
+      ref={elementRef}
+      style={{
+        width: "100%",
+        height: "512px",
+        backgroundColor: "black",
+        borderRadius: "12px",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "white",
+        fontWeight: 600,
+        fontSize: "16px",
+        textAlign: "center",
+      }}
+    >
+      {!file && "No DICOM file loaded"} {/* message in white */}
     </div>
+
+    {/* Metadata Panel */}
+    {Object.keys(metadata).length > 0 ? (
+      <div
+        style={{
+          backgroundColor: "white",
+          borderRadius: "12px",
+          padding: "16px",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          height: "512px",
+          overflowY: "auto",
+        }}
+      >
+        <h5
+          style={{
+            fontWeight: 600,
+            marginBottom: "12px",
+            textAlign: "center",
+            color: "#333",
+          }}
+        >
+          DICOM Metadata
+        </h5>
+        <MetadataPanel metadata={metadata} />
+      </div>
+    ) : (
+      <div
+        style={{
+          textAlign: "center",
+          color: "#777",
+          fontStyle: "italic",
+          paddingTop: "200px",
+        }}
+      >
+        Upload a DICOM file to view details
+      </div>
+    )}
+    </div>
+
+      </div>
+  </div>
   );
 }
 
