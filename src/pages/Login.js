@@ -18,7 +18,7 @@ function Login() {
   return (
     <div className="login-container">
       <form onSubmit={handleLogin} className="login-form">
-        <h2 className="login-title">MediView Login</h2>
+        <h2 className="login-title">MedInsight Login</h2>
         <div className="form-group">
           <input
             type="text"

@@ -18,7 +18,7 @@ function Home() {
 
       {/* Main content */}
       <div className="home-content">
-        <h1 className="home-title">Welcome to MediView</h1>
+        <h1 className="home-title">Welcome to MedInsight</h1>
         <p className="home-subtitle">Your Mini DICOM Viewer</p>
         <button
           onClick={() => navigate("/viewer")}

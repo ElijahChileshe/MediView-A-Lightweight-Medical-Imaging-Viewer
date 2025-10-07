@@ -106,7 +106,7 @@ function Viewer() {
       >
         {/* Header */}
         <h2 className="text-center mb-4" style={{ fontWeight: 600 }}>
-          MediView DICOM Viewer
+          MedInsight DICOM Viewer
         </h2>
 
         {/* File Upload Input */}
@@ -137,7 +137,6 @@ function Viewer() {
             position: "relative", // allows overlay positioning
           }}
         >
-    {/* DICOM Viewer */}
     {/* DICOM Viewer */}
 <div
   ref={elementRef}
