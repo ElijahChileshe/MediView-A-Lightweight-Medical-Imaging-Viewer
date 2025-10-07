@@ -138,26 +138,92 @@ function Viewer() {
           }}
         >
     {/* DICOM Viewer */}
-    <div
-      ref={elementRef}
-      style={{
-        width: "100%",
-        height: "512px",
-        backgroundColor: "black",
-        borderRadius: "12px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-        position: "relative",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "white",
-        fontWeight: 600,
-        fontSize: "16px",
-        textAlign: "center",
-      }}
-    >
-      {!file && "No DICOM file loaded"} {/* message in white */}
-    </div>
+    {/* DICOM Viewer */}
+<div
+  ref={elementRef}
+  style={{
+    width: "100%",
+    height: "512px",
+    backgroundColor: "black",
+    borderRadius: "12px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+    fontWeight: 600,
+    fontSize: "16px",
+    textAlign: "center",
+    overflow: "hidden",
+  }}
+>
+  {!file && "No DICOM file loaded"}
+
+  {/* Metadata overlays */}
+  {file && (
+    <>
+      <div
+        style={{
+          position: "absolute",
+          top: "8px",
+          left: "12px",
+          color: "#fff",
+          fontSize: "12px",
+          textAlign: "left",
+          lineHeight: "1.4",
+        }}
+      >
+        <div>{metadata["Patient Name"] || "Unknown"}</div>
+        <div>ID: {metadata["Patient ID"] || "Unknown"}</div>
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          top: "8px",
+          right: "12px",
+          color: "#fff",
+          fontSize: "12px",
+          textAlign: "right",
+          lineHeight: "1.4",
+        }}
+      >
+        <div>{metadata["Study Date"] || "Unknown"}</div>
+        <div>{metadata["Modality"] || "Unknown"}</div>
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: "8px",
+          left: "12px",
+          color: "#fff",
+          fontSize: "12px",
+          textAlign: "left",
+          lineHeight: "1.4",
+        }}
+      >
+        <div>{metadata["Institution Name"] || "Unknown"}</div>
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: "8px",
+          right: "12px",
+          color: "#fff",
+          fontSize: "12px",
+          textAlign: "right",
+          lineHeight: "1.4",
+        }}
+      >
+        <div>{metadata["Manufacturer"] || "Unknown"}</div>
+      </div>
+    </>
+  )}
+</div>
+
 
     {/* Metadata Panel */}
     {Object.keys(metadata).length > 0 ? (
