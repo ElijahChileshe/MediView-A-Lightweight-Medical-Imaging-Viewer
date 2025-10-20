@@ -4,32 +4,23 @@ import * as cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
 import * as dicomParser from "dicom-parser";
 import MetadataPanel from "../components/MetadataPanel";
 import { extractDicomMetadata } from "../components/extractDicomMetadata";
+import { anonymizeMetadata } from "../components/anonymize";
 
-function Viewer() {
-  // Reference to the viewer div (where the image is rendered)
+const Viewer = () => {
   const elementRef = useRef(null);
-
-  // State to hold uploaded file and extracted metadata
   const [file, setFile] = useState(null);
   const [metadata, setMetadata] = useState({});
+  const [isAnonymized, setIsAnonymized] = useState(false);
 
   useEffect(() => {
-    if (!file) return; // Exit early if no file selected
-
+    if (!file) return;
     const element = elementRef.current;
-    cornerstone.enable(element); // Enable Cornerstone on the div
+    cornerstone.enable(element);
 
-    // Link cornerstone and dicomParser to cornerstoneWADOImageLoader
     cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
     cornerstoneWADOImageLoader.external.dicomParser = dicomParser;
+    cornerstone.registerImageLoader("wadouri", cornerstoneWADOImageLoader.wadouri.loadImage);
 
-    // Register the WADO image loader
-    cornerstone.registerImageLoader(
-      "wadouri",
-      cornerstoneWADOImageLoader.wadouri.loadImage
-    );
-
-    // Initialize web workers for decoding DICOM files
     cornerstoneWADOImageLoader.webWorkerManager.initialize({
       webWorkerPath:
         "https://unpkg.com/cornerstone-wado-image-loader@latest/dist/cornerstoneWADOImageLoaderWebWorker.js",
@@ -41,76 +32,67 @@ function Viewer() {
       },
     });
 
-    // Read the uploaded file and extract metadata
     const reader = new FileReader();
-    reader.onload = function (e) {
-      const arrayBuffer = e.target.result;
-      const byteArray = new Uint8Array(arrayBuffer);
-
-      // Parse the DICOM dataset
+    reader.onload = (e) => {
+      const byteArray = new Uint8Array(e.target.result);
       const dataSet = dicomParser.parseDicom(byteArray);
-
-      // Extract key metadata fields
       setMetadata(extractDicomMetadata(dataSet));
 
-      
-
-      // Load and display the DICOM image
       const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
-      cornerstone.loadImage(imageId).then((image) => 
-        cornerstone.displayImage(element, image))
+      cornerstone.loadImage(imageId)
+        .then((image) => cornerstone.displayImage(element, image))
         .catch((err) => console.error("Failed to load image:", err));
 
-        // Enable mouse wheel zoom
       element.addEventListener("wheel", (event) => {
-        event.preventDefault(); // prevent page scroll
+        event.preventDefault();
         const viewport = cornerstone.getViewport(element);
         const zoomFactor = 1.05;
-        if (event.deltaY < 0) {
-          viewport.scale *= zoomFactor; // zoom in
-        } else {
-          viewport.scale /= zoomFactor; // zoom out
-        }
+        viewport.scale *= event.deltaY < 0 ? zoomFactor : 1 / zoomFactor;
         cornerstone.setViewport(element, viewport);
       });
     };
 
-    reader.readAsArrayBuffer(file); // Read the file as ArrayBuffer
-
-    // Cleanup on component unmount
+    reader.readAsArrayBuffer(file);
     return () => cornerstone.disable(element);
   }, [file]);
+
+  const displayedMetadata = isAnonymized ? anonymizeMetadata(metadata) : metadata;
 
   return (
     <div
       style={{
-        minHeight: "100vh",            // full screen height
-        backgroundColor: "#3b3b3b",    // dark gray outer background
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "#121212",
+        color: "white",
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "40px 20px",
-        boxSizing: "border-box",
+        flexDirection: "column",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Floating Top Bar */}
       <div
-        className="container mt-5"
         style={{
-          maxWidth: "80%",
-          height: "800px",
-          background: "#f8f9fa",
-          padding: "20px",
-          borderRadius: "16px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          background: "rgba(0, 0, 0, 0.7)",
+          backdropFilter: "blur(6px)",
+          padding: "10px 20px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          zIndex: 10,
+          boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
         }}
       >
-        {/* Header */}
-        <h2 className="text-center mb-4" style={{ fontWeight: 600 }}>
+        <h3 style={{ margin: 0, fontWeight: 600, letterSpacing: "0.5px" }}>
           MedInsight DICOM Viewer
-        </h2>
+        </h3>
 
-        {/* File Upload Input */}
-        <div className="text-center mb-4">
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <input
             type="file"
             accept=".dcm"
@@ -118,153 +100,107 @@ function Viewer() {
               setFile(e.target.files[0]);
               setMetadata({});
             }}
-            className="form-control"
             style={{
-              width: "300px",
-              margin: "0 auto",
-              borderRadius: "8px",
+              padding: "6px",
+              background: "#1f1f1f",
+              color: "white",
+              border: "1px solid #444",
+              borderRadius: "6px",
+              cursor: "pointer",
             }}
           />
+
+          {file && (
+            <button
+              onClick={() => setIsAnonymized(!isAnonymized)}
+              style={{
+                background: isAnonymized ? "#1976d2" : "#ffa000",
+                border: "none",
+                color: "white",
+                padding: "8px 12px",
+                borderRadius: "6px",
+                cursor: "pointer",
+                fontWeight: 500,
+              }}
+            >
+              {isAnonymized ? "Show Original" : "Anonymize Info"}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Main Layout */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "70% 30%",
+          height: "100%",
+          marginTop: "60px",
+        }}
+      >
+        {/* DICOM Viewer */}
+        <div
+          ref={elementRef}
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: "black",
+            position: "relative",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontWeight: 600,
+            fontSize: "16px",
+          }}
+        >
+          {!file && "Upload a DICOM file to view"}
+
+          {file && (
+            <>
+              {/* Overlays */}
+              <div style={{ position: "absolute", top: 10, left: 12, fontSize: "12px" }}>
+                <div>{displayedMetadata["Patient Name"] || "Unknown"}</div>
+                <div>ID: {displayedMetadata["Patient ID"] || "Unknown"}</div>
+              </div>
+
+              <div style={{ position: "absolute", top: 10, right: 12, fontSize: "12px" }}>
+                <div>{displayedMetadata["Study Date"] || "Unknown"}</div>
+                <div>{displayedMetadata["Modality"] || "Unknown"}</div>
+              </div>
+
+              <div style={{ position: "absolute", bottom: 10, left: 12, fontSize: "12px" }}>
+                <div>{displayedMetadata["Institution Name"] || "Unknown"}</div>
+              </div>
+
+              <div style={{ position: "absolute", bottom: 10, right: 12, fontSize: "12px" }}>
+                <div>{displayedMetadata["Manufacturer"] || "Unknown"}</div>
+              </div>
+            </>
+          )}
         </div>
 
-        {/* Layout Grid: Viewer (Left) + Metadata Panel (Right) */}
+        {/* Metadata Panel */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "60% 38%",
-            gap: "2%",
-            alignItems: "flex-start",
-            position: "relative", // allows overlay positioning
+            backgroundColor: "#1e1e1e",
+            color: "#ccc",
+            padding: "16px",
+            overflowY: "auto",
+            borderLeft: "1px solid #333",
           }}
         >
-    {/* DICOM Viewer */}
-<div
-  ref={elementRef}
-  style={{
-    width: "100%",
-    height: "512px",
-    backgroundColor: "black",
-    borderRadius: "12px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-    position: "relative",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "white",
-    fontWeight: 600,
-    fontSize: "16px",
-    textAlign: "center",
-    overflow: "hidden",
-  }}
->
-  {!file && "No DICOM file loaded"}
-
-  {/* Metadata overlays */}
-  {file && (
-    <>
-      <div
-        style={{
-          position: "absolute",
-          top: "8px",
-          left: "12px",
-          color: "#fff",
-          fontSize: "12px",
-          textAlign: "left",
-          lineHeight: "1.4",
-        }}
-      >
-        <div>{metadata["Patient Name"] || "Unknown"}</div>
-        <div>ID: {metadata["Patient ID"] || "Unknown"}</div>
+          <h4 style={{ color: "white", textAlign: "center" }}>DICOM Metadata</h4>
+          {Object.keys(metadata).length > 0 ? (
+            <MetadataPanel metadata={displayedMetadata} />
+          ) : (
+            <p style={{ textAlign: "center", color: "#777" }}>
+              No metadata available
+            </p>
+          )}
+        </div>
       </div>
-
-      <div
-        style={{
-          position: "absolute",
-          top: "8px",
-          right: "12px",
-          color: "#fff",
-          fontSize: "12px",
-          textAlign: "right",
-          lineHeight: "1.4",
-        }}
-      >
-        <div>{metadata["Study Date"] || "Unknown"}</div>
-        <div>{metadata["Modality"] || "Unknown"}</div>
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          bottom: "8px",
-          left: "12px",
-          color: "#fff",
-          fontSize: "12px",
-          textAlign: "left",
-          lineHeight: "1.4",
-        }}
-      >
-        <div>{metadata["Institution Name"] || "Unknown"}</div>
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          bottom: "8px",
-          right: "12px",
-          color: "#fff",
-          fontSize: "12px",
-          textAlign: "right",
-          lineHeight: "1.4",
-        }}
-      >
-        <div>{metadata["Manufacturer"] || "Unknown"}</div>
-      </div>
-    </>
-  )}
-</div>
-
-
-    {/* Metadata Panel */}
-    {Object.keys(metadata).length > 0 ? (
-      <div
-        style={{
-          backgroundColor: "white",
-          borderRadius: "12px",
-          padding: "16px",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-          height: "512px",
-          overflowY: "auto",
-        }}
-      >
-        <h5
-          style={{
-            fontWeight: 600,
-            marginBottom: "12px",
-            textAlign: "center",
-            color: "#333",
-          }}
-        >
-          DICOM Metadata
-        </h5>
-        <MetadataPanel metadata={metadata} />
-      </div>
-    ) : (
-      <div
-        style={{
-          textAlign: "center",
-          color: "#777",
-          fontStyle: "italic",
-          paddingTop: "200px",
-        }}
-      >
-        Upload a DICOM file to view details
-      </div>
-    )}
     </div>
-
-      </div>
-  </div>
   );
-}
+};
 
 export default Viewer;
