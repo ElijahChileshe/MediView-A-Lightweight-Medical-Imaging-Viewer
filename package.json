@@ -12,6 +12,7 @@
     "cornerstone-tools": "^6.0.10",
     "cornerstone-wado-image-loader": "^4.13.2",
     "dicom-parser": "^1.8.21",
+    "nifti-reader-js": "^0.8.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.2",

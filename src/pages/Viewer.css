@@ -1,0 +1,135 @@
+/* ===== CONTAINER ===== */
+.viewer-container {
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at top left, #001a1a 0%, #000000 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* ===== TOP BAR ===== */
+  .viewer-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 10, 15, 0.8);
+    backdrop-filter: blur(8px);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    box-shadow: 0 2px 12px rgba(0, 255, 170, 0.1);
+    border-bottom: 1px solid rgba(0, 255, 170, 0.2);
+  }
+  
+  .viewer-title {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #00ffaa;
+    text-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+  }
+  
+  /* ===== BUTTONS & INPUTS ===== */
+  .viewer-controls input[type="file"] {
+    padding: 6px;
+    background: #111;
+    color: white;
+    border: 1px solid #00ffaa;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.3s;
+  }
+  
+  .viewer-controls input[type="file"]:hover {
+    background: #00ffaa10;
+  }
+  
+  .anonymize-button {
+    background: #ffa000;
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .anonymize-button.active {
+    background: #1976d2;
+  }
+  
+  .anonymize-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 255, 170, 0.3);
+  }
+  
+  /* ===== MAIN LAYOUT ===== */
+  .viewer-main {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    height: 100%;
+    margin-top: 60px;
+  }
+  
+  /* ===== DICOM VIEWER AREA ===== */
+  .dicom-viewer {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  /* ===== METADATA PANEL ===== */
+  .metadata-panel {
+    background-color: #0d1a1a;
+    color: #a8f7e8;
+    padding: 16px;
+    overflow-y: auto;
+    border-left: 1px solid rgba(0, 255, 170, 0.2);
+  }
+  
+  .metadata-panel h4 {
+    color: #00ffaa;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0, 255, 170, 0.4);
+  }
+  
+  .metadata-panel p {
+    text-align: center;
+    color: #777;
+  }
+  
+  /* ===== OVERLAYS ===== */
+  .overlay {
+    position: absolute;
+    font-size: 12px;
+    opacity: 0.9;
+    color: #bfffea;
+    text-shadow: 0 0 6px rgba(0, 255, 170, 0.4);
+  }
+  
+  .top-left { top: 10px; left: 12px; }
+  .top-right { top: 10px; right: 12px; text-align: right; }
+  .bottom-left { bottom: 60px; left: 12px; }
+  .bottom-right { bottom: 60px; right: 12px; text-align: right; }
+  
+
+
+
+
+  
