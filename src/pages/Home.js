@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css"; // We'll create a separate CSS file for styling
 
 function Home() {
   const navigate = useNavigate();
+  const [username, setUserName] = useState('');
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUserName(storedUsername);
+    }
+  }, []);
 
   return (
     <div className="home-container">
@@ -18,7 +26,7 @@ function Home() {
 
       {/* Main content */}
       <div className="home-content">
-        <h1 className="home-title">Welcome to MedInsight</h1>
+        <h1 className="home-title">Welcome to MedInsight, {username}</h1>
         <p className="home-subtitle">Your Mini DICOM Viewer</p>
         <button
           onClick={() => navigate("/viewer")}

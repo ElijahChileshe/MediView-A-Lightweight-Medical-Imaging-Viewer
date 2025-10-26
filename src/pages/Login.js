@@ -11,6 +11,7 @@ function Login() {
     e.preventDefault();
     if (username && password) {
       localStorage.setItem("token", "mock-jwt-token");
+      localStorage.setItem("username", username);
       navigate("/home");
     }
   };

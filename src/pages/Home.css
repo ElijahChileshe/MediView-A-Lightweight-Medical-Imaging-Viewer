@@ -1,167 +1,119 @@
-/* Full screen container */
-.home-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #2f2f2f, #4a4a4a); /* soft gray gradient */
-
-    font-family: "Inter, sans-serif";
-    color: white;
-  }
-  
-/* Home.css */
-
-/* Full-page container */
+/* Background setup */
 .home-container {
   position: relative;
-  width: 100%;
   height: 100vh;
-  background: linear-gradient(135deg, #4a4a4a, #6b6b6b); /* uniform gray gradient */
+  width: 100%;
+  background: radial-gradient(circle at top left, #001a1a 0%, #000000 100%);
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #ffffff;
 }
 
-/* Background animated circles */
-.background-circles .circle {
+/* Animated bubbles */
+.background-circles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.circle {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.2;
+  opacity: 0.3;
+  animation: float 12s infinite ease-in-out;
+  background: linear-gradient(145deg, #00ffaa, #00aaff);
+  box-shadow: 0 0 20px 5px rgba(0, 255, 170, 0.4), 0 0 40px 10px rgba(0, 170, 255, 0.2);
 }
 
-/* Individual circles with size, color, and different animation durations */
+/* Position & size variations */
 .circle1 {
-  width: 250px;
-  height: 250px;
-  background-color: #bfbfbf;
+  width: 150px;
+  height: 150px;
   top: 10%;
   left: 20%;
-  animation: move1 25s infinite linear;
+  animation-delay: 0s;
 }
 
 .circle2 {
-  width: 350px;
-  height: 350px;
-  background-color: #d0d0d0;
+  width: 200px;
+  height: 200px;
   top: 50%;
-  left: 60%;
-  animation: move2 30s infinite linear;
+  left: 70%;
+  animation-delay: 3s;
 }
 
 .circle3 {
-  width: 200px;
-  height: 200px;
-  background-color: #c4c4c4;
-  top: 70%;
-  left: 30%;
-  animation: move3 28s infinite linear;
+  width: 100px;
+  height: 100px;
+  top: 75%;
+  left: 15%;
+  animation-delay: 5s;
 }
 
 .circle4 {
-  width: 400px;
-  height: 400px;
-  background-color: #d9d9d9;
-  top: 10%;
-  left: 80%;
-  animation: move4 35s infinite linear;
+  width: 180px;
+  height: 180px;
+  top: 30%;
+  left: 50%;
+  animation-delay: 7s;
 }
 
 .circle5 {
-  width: 300px;
-  height: 300px;
-  background-color: #c8c8c8;
-  top: 50%;
-  left: 50%;
-  animation: move5 32s infinite linear;
+  width: 130px;
+  height: 130px;
+  top: 85%;
+  left: 80%;
+  animation-delay: 9s;
 }
 
-/* Keyframes for random-ish floating movement */
-@keyframes move1 {
-  0% { transform: translate(0,0); }
-  25% { transform: translate(60vw, 20vh); }
-  50% { transform: translate(-40vw, 50vh); }
-  75% { transform: translate(30vw, -30vh); }
-  100% { transform: translate(0,0); }
+/* Floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-40px) scale(1.2);
+    opacity: 0.6;
+  }
 }
 
-@keyframes move2 {
-  0% { transform: translate(0,0); }
-  25% { transform: translate(-50vw, 30vh); }
-  50% { transform: translate(40vw, -20vh); }
-  75% { transform: translate(-30vw, 40vh); }
-  100% { transform: translate(0,0); }
-}
-
-@keyframes move3 {
-  0% { transform: translate(0,0); }
-  25% { transform: translate(50vw, -40vh); }
-  50% { transform: translate(-20vw, 50vh); }
-  75% { transform: translate(30vw, -20vh); }
-  100% { transform: translate(0,0); }
-}
-
-@keyframes move4 {
-  0% { transform: translate(0,0); }
-  25% { transform: translate(-40vw, 30vh); }
-  50% { transform: translate(50vw, -30vh); }
-  75% { transform: translate(-20vw, 40vh); }
-  100% { transform: translate(0,0); }
-}
-
-@keyframes move5 {
-  0% { transform: translate(0,0); }
-  25% { transform: translate(30vw, 40vh); }
-  50% { transform: translate(-50vw, -20vh); }
-  75% { transform: translate(40vw, 30vh); }
-  100% { transform: translate(0,0); }
-}
-
-/* Main content overlay */
+/* Text content */
 .home-content {
   position: relative;
-  z-index: 1; /* above circles */
+  z-index: 2;
   text-align: center;
-  color: #ffffff;
-  font-family: Arial, sans-serif;
 }
 
 .home-title {
   font-size: 3rem;
   font-weight: 700;
-  margin-bottom: 10px;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(0, 255, 170, 0.7);
 }
 
 .home-subtitle {
   font-size: 1.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  color: #80ffd7;
 }
 
 .home-button {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  background: linear-gradient(90deg, #00ffaa, #00aaff);
   border: none;
-  border-radius: 8px;
-  background: #9ca3af; /* nice gray button */
-  color: #1f2937;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  color: #000;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
 }
 
 .home-button:hover {
-  background: #d1d5db; /* lighter on hover */
-  color: #111827;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(0, 255, 170, 0.8), 0 0 40px rgba(0, 170, 255, 0.4);
 }
-  
-  @keyframes float {
-    0% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(-20px) translateX(20px); }
-    100% { transform: translateY(0) translateX(0); }
-  }
-  
-  
