@@ -1,6 +1,6 @@
-# MediView - DICOM Viewer
+# MedInsight - DICOM Viewer
 
-MediView is a lightweight web application for viewing medical DICOM images. It allows users to upload `.dcm` files, view them in a web-based viewer, and display key patient metadata extracted from the image.
+MedInsight is a lightweight web application for viewing medical DICOM images. It allows users to upload `.dcm` files, view them in a web-based viewer, and display key patient metadata extracted from the image.
 
 ---
 
@@ -61,10 +61,16 @@ npm start
 ---
 
 
-<!-- ## Demo
+## 🖼️ Preview
 
-![Screenshot](screenshot.png) *(Add a screenshot of your app here)*
+### 🔐 Login Page
+![Login Page](public/login.png)
 
---- -->
+### 📊 Dashboard
+![Dashboard](public/dashboard.png)
+
+### 🩺 DICOM Viewer
+![Viewer](public/viewer.png)
+
 
 
